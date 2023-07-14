@@ -6,6 +6,8 @@
 
 #include <czmq.h>
 
+#include "dataprocess.h"
+
 int main(int argc, char **argv)
 {
     /* create socket as responder to listen to request */
