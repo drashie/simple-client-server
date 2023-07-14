@@ -1,11 +1,24 @@
 /* to build: 
-    gcc server.c -o client
+
+    sudo apt install libczmq-dev
+
+     gcc -o client client.c -lczmq
     ./client */
 
-#include <stdio.h>
+#include <czmq.h>
 
-int main(void)
+int main(int argc, char **argv)
 {
-    printf("Hello World!\n");
+    zsock_t *requester = zsock_new(ZMQ_REQ);
+    zsock_connect(requester, "tcp://localhost:5555");
+    zstr_send(requester, "Low Level");
+
+    sleep(1);
+
+    char *str = zstr_recv(requester);
+    printf("%s!", str);
+
+    zsock_destroy(&requester);
+
     return 0;
 }
