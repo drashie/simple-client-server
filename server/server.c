@@ -8,13 +8,15 @@
 
 #include "dataprocess.h"
 
+#define SERVER "tcp://*:5555"
+
 int main(int argc, char **argv)
 {
     /* create socket as responder to listen to request */
     zsock_t *responder = zsock_new(ZMQ_REP);
 
     /* try to open port */
-    int r = zsock_bind(responder, "tcp://*:5555");
+    int r = zsock_bind(responder, SERVER);
     if (r != 5555)
         printf("FAILED to bind to port\n");
 

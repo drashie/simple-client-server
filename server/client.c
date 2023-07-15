@@ -6,14 +6,16 @@
 
 #include <czmq.h>
 
+#define RASPI_SERVER "tcp://192.168.178.34:5555"
+
 int main(int argc, char **argv)
 {
     /* create socket as requester to connect to server */
     zsock_t *requester = zsock_new(ZMQ_REQ);
 
     /* connect to server with requester and send data
-     * to connect input Ip-Adress of server instead of localhost*/
-    zsock_connect(requester, "tcp://localhost:5555");
+     * to connect input Ip-Adress of server instead of the raspi connection in my case */
+    zsock_connect(requester, RASPI_SERVER);
     zstr_send(requester, "Low Level");
 
     /* wait for the server to response */
