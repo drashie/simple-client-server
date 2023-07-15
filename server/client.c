@@ -11,7 +11,8 @@ int main(int argc, char **argv)
     /* create socket as requester to connect to server */
     zsock_t *requester = zsock_new(ZMQ_REQ);
 
-    /* connect to server with requester and send data */
+    /* connect to server with requester and send data
+     * to connect input Ip-Adress of server instead of localhost*/
     zsock_connect(requester, "tcp://localhost:5555");
     zstr_send(requester, "Low Level");
 
