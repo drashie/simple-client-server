@@ -20,6 +20,8 @@ long get_file_size(FILE *fp)
 
 /**
  *  @brief read file data and return it
+ *         buffer will need to be freed: free()
+ *         by caller to avoid memory leak
  * 
  *  @return buffer containing file contant as char *
  */
@@ -59,21 +61,5 @@ int write_data_content(char* buffer)
     if (fputs(buffer, fp) == EOF) { printf("failed to write\n"); fclose(fp); return 2; }
 
     fclose(fp);
-    return 0;
-}
-
-int main(void)
-{
-    char *input_stream = "\nTHIS IS A NEW LINE\n";
-    char *data;
-
-    if (write_data_content(input_stream) != 0)
-        return 1;
-
-    data = get_data_content();
-
-    printf("Written from file: %s", data);
-
-    free(data);
     return 0;
 }
