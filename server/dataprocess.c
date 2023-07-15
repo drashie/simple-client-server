@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "dataprocess.h"
 
 #define FILE_PATH "data/.plist.txt"
+#define MAX_INPUT_BUFFER_SIZE 256
 
 /**
  * @brief get size of file
@@ -53,6 +55,12 @@ char* get_data_content(void)
  */
 int write_data_content(char* buffer)
 {
+    /* input to add to the file is too large */
+    if ((strlen(buffer)) > MAX_INPUT_BUFFER_SIZE) {
+        free(buffer); /* release allocated memory for the buffer */
+        return 3;
+    }
+
     /* open file (appending mode)*/
     FILE *fp = fopen(FILE_PATH, "a");
     /* check for error while opening */
