@@ -57,6 +57,7 @@ int write_data_content(char* buffer)
 {
     /* input to add to the file is too large */
     if ((strlen(buffer)) > MAX_INPUT_BUFFER_SIZE) {
+        printf("input too large, max is 256 bytes!\n");
         free(buffer); /* release allocated memory for the buffer */
         return 3;
     }
