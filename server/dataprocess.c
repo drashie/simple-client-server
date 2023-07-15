@@ -68,6 +68,7 @@ int write_data_content(char* buffer)
     /* write given buffer to the file */
     if (fputs(buffer, fp) == EOF) { printf("failed to write\n"); fclose(fp); return 2; }
 
+    free(buffer);
     fclose(fp);
     return 0;
 }
