@@ -5,6 +5,8 @@
 */
 
 #include <czmq.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "dataprocess.h"
 
@@ -25,10 +27,14 @@ int main(int argc, char **argv)
     /* listen to incoming msg */
     while (true) {
         char *msg = zstr_recv(responder);
+        
+        if (msg != NULL) {
+            if (!strncmp(msg, "GET", MAX_INPUT_BUFFER_SIZE))
+                zstr_send(responder, "Super Gang");
 
-        /* incoming msg = Low Level, Repsonse with Gang */
-        if (!strncmp(msg, "Low Level", MAX_INPUT_BUFFER_SIZE))
-            zstr_send(responder, "Gang");
+            if ((strlen(msg) < MAX_INPUT_BUFFER_SIZE) && (strstr(msg, "ADD")))
+                zstr_send(responder, "Super DUPER Gang");
+        }
 
         free(msg);
     }
