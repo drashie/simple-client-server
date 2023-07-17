@@ -7,6 +7,7 @@
 #include <czmq.h>
 
 #define RASPI_SERVER "tcp://192.168.178.34:5555"
+#define LOCAL_SERVER "tcp://localhost:5555"
 
 int main(int argc, char **argv)
 {

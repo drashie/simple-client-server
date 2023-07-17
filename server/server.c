@@ -27,7 +27,7 @@ int main(int argc, char **argv)
         char *msg = zstr_recv(responder);
 
         /* incoming msg = Low Level, Repsonse with Gang */
-        if (!strcmp(msg, "Low Level"))
+        if (!strncmp(msg, "Low Level", MAX_INPUT_BUFFER_SIZE))
             zstr_send(responder, "Gang");
 
         free(msg);

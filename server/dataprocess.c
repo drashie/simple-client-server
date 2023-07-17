@@ -4,7 +4,6 @@
 #include "dataprocess.h"
 
 #define FILE_PATH "data/.plist.txt"
-#define MAX_INPUT_BUFFER_SIZE 256
 
 /**
  * @brief get size of file
