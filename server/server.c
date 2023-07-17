@@ -17,8 +17,10 @@ int main(int argc, char **argv)
 
     /* try to open port */
     int r = zsock_bind(responder, SERVER);
-    if (r != 5555)
+    if (r != 5555) {
         printf("FAILED to bind to port\n");
+        return 4;
+    }
 
     /* listen to incoming msg */
     while (true) {
