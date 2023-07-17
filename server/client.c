@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     /* print out response */
     char *str = zstr_recv(requester);
     printf("%s!", str);
-
+    free(str);
     /* close socket */
     zsock_destroy(&requester);
 
