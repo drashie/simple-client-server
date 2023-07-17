@@ -42,6 +42,7 @@ char* get_data_content(void)
     if (buffer == NULL) { 
         printf("failed to allocate memory for the file\n"); 
         fclose(fp); 
+        return NULL;
     }
 
     /* read file content into the buffer and return it */
@@ -63,7 +64,6 @@ int write_data_content(char* buffer)
     /* input to add to the file is too large */
     if ((strlen(buffer)) > MAX_INPUT_BUFFER_SIZE) {
         printf("input too large, max is 256 bytes!\n");
-        free(buffer); /* release allocated memory for the buffer */
         return 3;
     }
 
@@ -77,10 +77,16 @@ int write_data_content(char* buffer)
     /* write given buffer to the file */
     if (fputs(buffer, fp) == EOF) { 
         printf("failed to write\n"); 
-        fclose(fp); return 2; 
+        fclose(fp); 
+        return 2; 
+    }
+    /* end with line break */
+    if (fputs("\n", fp) == EOF) {
+        printf("failed to write\n"); 
+        fclose(fp); 
+        return 2; 
     }
 
-    free(buffer);
     fclose(fp);
     return 0;
 }

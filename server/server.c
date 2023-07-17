@@ -35,8 +35,13 @@ int main(int argc, char **argv)
                 free(output);
             }
 
-            if ((strlen(msg) < MAX_INPUT_BUFFER_SIZE) && (strstr(msg, "ADD")))
-                zstr_send(responder, "Super DUPER Gang");
+            if ((strlen(msg) < MAX_INPUT_BUFFER_SIZE) && (strstr(msg, "ADD"))) { 
+                char line[MAX_INPUT_BUFFER_SIZE];
+                strcpy(line, (msg + 4)); /* Cut the ADD cmd from the given string */
+
+                if (!write_data_content(line)) /* try to add the line to the txt file */
+                    zstr_send(responder, "LINE SUCCESFULLY ADDED");
+            }
         }
 
         free(msg);
