@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         addButton.setOnClickListener{
-            recvText.text = "ADD BUTTON PRESSED"
+            recvText.text = servCom.sendData("Test")
         }
     }
 }

@@ -8,8 +8,8 @@ class ServerCommnunication {
     }
 
     /* send given data to the server */
-    fun sendData(content: String){
-
+    fun sendData(content: String): String {
+        return "ADD BUTTON PRESSED"
     }
 
 }
