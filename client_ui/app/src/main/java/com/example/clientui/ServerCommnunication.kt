@@ -1,14 +1,69 @@
 package com.example.clientui
 
+// import kotlinx.coroutines.*
+import android.util.Log
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.lang.Exception
+import java.lang.IllegalArgumentException
+import java.net.HttpURLConnection
+import java.net.Socket
+import java.net.URL
+
 /* Here the communication with our server happens */
-class ServerCommnunication {
-    /* get the data from the server */
+class ServerCommunication {
+    val RASPI_IP = "192.168.178.34"
+    val PORT = 5555
+
+    /**
+     * @brief get the data from the server
+     * @return The data received from the server as string
+     */
     fun getData(): String {
-        return "GET BUTTON PRESSED";
+        var response = ""
+        try {
+            // create socket to raspi with port 5555
+            val socket = Socket(RASPI_IP, PORT)
+
+            // send data to the server
+            val outputStreamWriter = OutputStreamWriter(socket.getOutputStream())
+            outputStreamWriter.write("GET\u0000")
+            outputStreamWriter.flush()
+            Log.d("TAG", "GET MSG SEND!")
+
+            Log.d("TAG", "Now wait 3 secs")
+            Thread.sleep(3000)
+
+            Log.d("TAG", "Now Read input from server")
+            val inputStreamReader = InputStreamReader(socket.getInputStream())
+            val bufferReader = BufferedReader(inputStreamReader)
+            var line: String? = bufferReader.readLine()
+            while (line != null) {
+                response += line
+                Log.d("TAG", "response value: $response")
+                line = bufferReader.readLine()
+            }
+            socket.close()
+        } catch (e : Exception){
+            response = "ERROR CAN NOT CONNECT TO SERVER"
+        }
+        return response;
     }
 
-    /* send given data to the server */
+    /**
+     * @brief send given data to server in the following format:
+     *        "ADD content" max 256 bytes are accepted
+     * @param content String that is send to the server max 256 bytes
+     * @return server response
+     */
     fun sendData(content: String): String {
+        if (content.length > 256) {
+            throw IllegalArgumentException("ERROR: Max length is 256!")
+        }
+        /* Add null character so the c server does not complain */
+        val newContent = "ADD $content\u0000"
+
         return "ADD BUTTON PRESSED"
     }
 
