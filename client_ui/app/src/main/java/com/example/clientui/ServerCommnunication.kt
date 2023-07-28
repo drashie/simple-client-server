@@ -22,32 +22,33 @@ class ServerCommunication {
      */
     fun getData(): String {
         var response = ""
-        try {
-            // create socket to raspi with port 5555
-            val socket = Socket(RASPI_IP, PORT)
+        // try {
+        // create socket to raspi with port 5555
+        val socket = Socket(RASPI_IP, PORT)
 
-            // send data to the server
-            val outputStreamWriter = OutputStreamWriter(socket.getOutputStream())
-            outputStreamWriter.write("GET\u0000")
-            outputStreamWriter.flush()
-            Log.d("TAG", "GET MSG SEND!")
+        // send data to the server
+        val outputStreamWriter = OutputStreamWriter(socket.getOutputStream(), "UTF-8")
+        outputStreamWriter.write("GET")
+        outputStreamWriter.flush()
+        Log.d("TAG", "GET MSG SEND!")
 
-            Log.d("TAG", "Now wait 3 secs")
-            Thread.sleep(3000)
+        Log.d("TAG", "Now wait 1 secs")
+        Thread.sleep(1000)
 
-            Log.d("TAG", "Now Read input from server")
-            val inputStreamReader = InputStreamReader(socket.getInputStream())
-            val bufferReader = BufferedReader(inputStreamReader)
-            var line: String? = bufferReader.readLine()
-            while (line != null) {
-                response += line
-                Log.d("TAG", "response value: $response")
-                line = bufferReader.readLine()
-            }
-            socket.close()
-        } catch (e : Exception){
-            response = "ERROR CAN NOT CONNECT TO SERVER"
+        Log.d("TAG", "Now Read input from server")
+        val inputStreamReader = InputStreamReader(socket.getInputStream(), "UTF-8")
+        val bufferReader = BufferedReader(inputStreamReader)
+        var line: String? = bufferReader.readLine()
+        while (line != null) {
+            response += line
+            Log.d("TAG", "response value: $response")
+            line = bufferReader.readLine()
         }
+        socket.close()
+        /*} catch (e : Exception){
+            e.printStackTrace()
+            response = "ERROR CAN NOT CONNECT TO SERVER"
+        }*/
         return response;
     }
 

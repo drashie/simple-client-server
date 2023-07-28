@@ -42,4 +42,15 @@
         app:layout_constraintTop_toBottomOf="@+id/RECV_TEXT"
         app:layout_constraintVertical_bias="0.877" />
 
+    <Button
+        android:id="@+id/PING_BUTTON"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PING"
+        app:layout_constraintBottom_toTopOf="@+id/ADD_BUTTON"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RECV_TEXT"
+        app:layout_constraintVertical_bias="0.869" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
