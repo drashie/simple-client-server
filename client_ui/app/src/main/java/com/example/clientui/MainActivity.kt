@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity() {
 
             lifecycleScope.launch (Dispatchers.IO) {
                 var resp = "Not connected"
-                // try {
-                resp = servCom.getData()
-                /* } catch (e : Exception) {
+                try {
+                    resp = servCom.getData()
+                } catch (e : Exception) {
                      resp = "ERROR: could not connect to server!"
-                 }*/
+                 }
                 updateTextView(resp)
             }
         }

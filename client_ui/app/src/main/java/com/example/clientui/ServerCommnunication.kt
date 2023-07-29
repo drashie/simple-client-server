@@ -14,7 +14,7 @@ import java.net.URL
 /* Here the communication with our server happens */
 class ServerCommunication {
     val RASPI_IP = "192.168.178.34"
-    val PORT = 5555
+    val PORT = 5556
 
     /**
      * @brief get the data from the server
@@ -22,33 +22,33 @@ class ServerCommunication {
      */
     fun getData(): String {
         var response = ""
-        // try {
-        // create socket to raspi with port 5555
-        val socket = Socket(RASPI_IP, PORT)
+        try {
+            // create socket to raspi with port 5555
+            val socket = Socket(RASPI_IP, PORT)
 
-        // send data to the server
-        val outputStreamWriter = OutputStreamWriter(socket.getOutputStream(), "UTF-8")
-        outputStreamWriter.write("GET")
-        outputStreamWriter.flush()
-        Log.d("TAG", "GET MSG SEND!")
+            // send data to the server
+            val outputStreamWriter = OutputStreamWriter(socket.getOutputStream(), "UTF-8")
+            outputStreamWriter.write("GET")
+            outputStreamWriter.flush()
+            Log.d("TAG", "GET MSG SEND!")
 
-        Log.d("TAG", "Now wait 1 secs")
-        Thread.sleep(1000)
+            Log.d("TAG", "Now wait 1 secs")
+            Thread.sleep(1000)
 
-        Log.d("TAG", "Now Read input from server")
-        val inputStreamReader = InputStreamReader(socket.getInputStream(), "UTF-8")
-        val bufferReader = BufferedReader(inputStreamReader)
-        var line: String? = bufferReader.readLine()
-        while (line != null) {
-            response += line
-            Log.d("TAG", "response value: $response")
-            line = bufferReader.readLine()
-        }
-        socket.close()
-        /*} catch (e : Exception){
+            Log.d("TAG", "Now Read input from server")
+            val inputStreamReader = InputStreamReader(socket.getInputStream(), "UTF-8")
+            val bufferReader = BufferedReader(inputStreamReader)
+            var line: String? = bufferReader.readLine()
+            while (line != null) {
+                response += line
+                Log.d("TAG", "response value: $response")
+                line = bufferReader.readLine()
+            }
+            socket.close()
+        } catch (e : Exception){
             e.printStackTrace()
             response = "ERROR CAN NOT CONNECT TO SERVER"
-        }*/
+        }
         return response;
     }
 
