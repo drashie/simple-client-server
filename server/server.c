@@ -1,59 +1,72 @@
 /*  
-    1. sudo apt install libczmq-dev                     -> get library
-    2. gcc -o server server.c dataprocess.c -lczmq      -> compile
-    3. ./server                                         -> run
+    1. gcc -o server server.c dataprocess.c             -> compile
+    2. ./server                                         -> run
 */
 
-#include <czmq.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 
 #include "dataprocess.h"
 
-#define SERVER "tcp://*:5555"
+#define PORT 5555
 
 int main(int argc, char **argv)
 {
-    /* create socket as responder to listen to request */
-    zsock_t *responder = zsock_new(ZMQ_REP);
-    printf("main fn started!\n");
+    int serverSocket, clientSocket;
+    struct sockaddr_in serverAddr, clientAddr;
+    socklen_t addrLen = sizeof(clientAddr);
+    char buffer[MAX_INPUT_BUFFER_SIZE];
 
-    /* try to open port */
-    int r = zsock_bind(responder, SERVER);
-    if (r != 5555) {
-        printf("FAILED to bind to port\n");
-        return 4;
+    /* create tcp socket */
+    if ((serverSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("failed to create socket!");
+        exit(EXIT_FAILURE);
     }
-    printf("port is bound to %d\n", r);
+    /* bind to port and ip */
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(PORT);
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    if ((bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr))) < 0) {
+        perror("binding to port / IP failed!");
+        exit(EXIT_FAILURE);
+    }
+    printf("bound to port: %d\n", PORT);
 
-    /* listen to incoming msg */
-    while (true) {
-        char *msg = zstr_recv(responder);
-        printf("listening for msgs\n");
-        
-        if (msg != NULL) {
-            printf("Recv Msg: %s\n", msg);
-            if (!strncmp(msg, "GET", MAX_INPUT_BUFFER_SIZE)) {
-                char *output = get_data_content();
-                zstr_send(responder, output);
-                free(output);
-            } else if ((strlen(msg) < MAX_INPUT_BUFFER_SIZE) && (strstr(msg, "ADD"))) { 
-                char line[MAX_INPUT_BUFFER_SIZE];
-                strcpy(line, (msg + 4)); /* Cut the ADD cmd from the given string */
 
-                if (!write_data_content(line)) /* try to add the line to the txt file */
-                    zstr_send(responder, "LINE SUCCESFULLY ADDED");
-            } else {
-                printf("Unknown Command!: %s\n", msg);
-                zstr_send(responder, "ERROR: UNKNOWN CMD!");
+    if (listen(serverSocket, 1) > 0) {
+        /* listen to incoming connections and msg */
+        while (true) {
+            printf("server is listening on port: %d\n", PORT);
+            if ((clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &addrLen)) < 0) {
+                perror("accept connection failed!");
+                exit(EXIT_FAILURE);
             }
+            printf("client connected: %s\n", inet_ntoa(clientAddr.sin_addr));
+
+            /* recv msg from client */
+            int bytesRead;
+            while ((bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
+                buffer[bytesRead] = '\0';
+                printf("Received from client: %s\n", buffer);
+
+                const char *response = "Hello from server!";
+                send(clientSocket, response, strlen(response), 0);
+            }
+            close(clientSocket);
         }
 
-        free(msg);
-    }
+        close(serverSocket);
 
+    } else { /* listen is not possible */
+        perror("listen failed!");
+        close(serverSocket);
+        exit(EXIT_FAILURE);
+    }
     /* close socket */
-    zsock_destroy(&responder);
+    // zsock_destroy(&responder);
 
     return 0;
 }
