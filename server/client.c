@@ -73,6 +73,10 @@ int main(int argc, char **argv)
         perror("memory allocation failed!");
         exit(EXIT_FAILURE);
     }
+    
+    /* wait for the server to response */
+    sleep(1);
+
     /* recv msg from server */
     int bytesRead = recv(clientSocket, srvMsg, buffer_size, 0);
     if (bytesRead < 0) { /* recv failed */
