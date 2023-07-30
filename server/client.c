@@ -7,16 +7,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/socket.h>
 #include <arpa/inet.h>
 
 #include "dataprocess.h"
 
-#define RASPI_SERVER "tcp://192.168.178.34:5555"
-#define LOCAL_SERVER "tcp://localhost:5555"
-
 #define SERVER_IP   "192.168.178.34"
 #define PORT        5555 
-
 #define GET_COMMAND 2
 #define ADD_COMMAND 3
 

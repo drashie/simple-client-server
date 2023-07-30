@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <unistd.h>
+#include <sys/socket.h>
 #include <arpa/inet.h>
 
 #include "dataprocess.h"
@@ -25,6 +27,12 @@ int main(int argc, char **argv)
         perror("failed to create socket!");
         exit(EXIT_FAILURE);
     }
+    int enableImmediatReuseOfPort = 1;
+    if (setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &enableImmediatReuseOfPort, sizeof(enableImmediatReuseOfPort)) < 0) {
+        perror("set socket settings failed!");
+        exit(EXIT_FAILURE);
+    }
+
     /* bind to port and ip */
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(PORT);
@@ -36,7 +44,7 @@ int main(int argc, char **argv)
     printf("bound to port: %d\n", PORT);
 
 
-    if (listen(serverSocket, 1) > 0) {
+    if (listen(serverSocket, 1) != -1) {
         /* listen to incoming connections and msg */
         while (true) {
             printf("server is listening on port: %d\n", PORT);
@@ -48,14 +56,14 @@ int main(int argc, char **argv)
 
             /* recv msg from client */
             int bytesRead;
-            while ((bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
+            if ((bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
                 buffer[bytesRead] = '\0';
                 printf("Received from client: %s\n", buffer);
 
                 const char *response = "Hello from server!";
                 send(clientSocket, response, strlen(response), 0);
+                close(clientSocket);
             }
-            close(clientSocket);
         }
 
         close(serverSocket);
