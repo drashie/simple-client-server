@@ -62,10 +62,9 @@ int main(int argc, char **argv)
 
                 const char *response = "Hello from server!";
                 send(clientSocket, response, strlen(response), 0);
-                close(clientSocket);
             }
+            close(clientSocket);
         }
-
         close(serverSocket);
 
     } else { /* listen is not possible */
@@ -73,8 +72,6 @@ int main(int argc, char **argv)
         close(serverSocket);
         exit(EXIT_FAILURE);
     }
-    /* close socket */
-    // zsock_destroy(&responder);
 
     return 0;
 }
