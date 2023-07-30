@@ -43,7 +43,6 @@ int main(int argc, char **argv)
     
     int clientSocket;
     struct sockaddr_in serverAddr;
-    char buffer[MAX_INPUT_BUFFER_SIZE];
 
     /* create tcp socket */
     if ((clientSocket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -64,13 +63,26 @@ int main(int argc, char **argv)
     printf("connected to the server\n");
 
     /* send data to the server */
-    const char *msg = "GET";
-    send(clientSocket, msg, strlen(msg), 0);
+    send(clientSocket, input, strlen(input), 0);
 
-    /* response from server */
-    int bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-    buffer[bytesRead] = '\0';
-    printf("Recv from server: %s\n", buffer);
+    /* allocate memory for server response */
+    char *srvMsg = NULL;
+    int buffer_size = 50000;
+    srvMsg = (char *)malloc(buffer_size);
+    if (srvMsg == NULL) {
+        perror("memory allocation failed!");
+        exit(EXIT_FAILURE);
+    }
+    /* recv msg from server */
+    int bytesRead = recv(clientSocket, srvMsg, buffer_size, 0);
+    if (bytesRead < 0) { /* recv failed */
+        perror("Receive failed!");
+        free(srvMsg);
+        exit(EXIT_FAILURE);
+    }
+    srvMsg[bytesRead] = '\0';
+    printf("Recv from server: %s\n", srvMsg);
+    free(srvMsg);
 
     /* close socket */
     close(clientSocket);
