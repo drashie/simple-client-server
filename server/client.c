@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 
     /* allocate memory for server response */
     char *srvMsg = NULL;
-    int buffer_size = 50000;
+    int buffer_size = 150000;
     srvMsg = (char *)malloc(buffer_size);
     if (srvMsg == NULL) {
         perror("memory allocation failed!");
