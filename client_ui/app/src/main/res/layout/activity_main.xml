@@ -16,19 +16,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.777" />
 
     <Button
         android:id="@+id/GET_BUTTON"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:text="GET"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.277"
+        app:layout_constraintEnd_toStartOf="@+id/ADD_BUTTON"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.944" />
+        app:layout_constraintTop_toBottomOf="@+id/RECV_TEXT"
+        app:layout_constraintVertical_bias="0.755" />
 
     <Button
         android:id="@+id/ADD_BUTTON"
@@ -37,20 +38,39 @@
         android:text="ADD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.722"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RECV_TEXT"
-        app:layout_constraintVertical_bias="0.877" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/GET_BUTTON"
+        app:layout_constraintTop_toBottomOf="@+id/PING_BUTTON"
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/PING_BUTTON"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PING"
-        app:layout_constraintBottom_toTopOf="@+id/ADD_BUTTON"
+        app:layout_constraintBottom_toTopOf="@+id/GET_BUTTON"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RECV_TEXT"
-        app:layout_constraintVertical_bias="0.869" />
+        app:layout_constraintVertical_bias="0.806" />
+
+    <ScrollView
+        android:layout_width="400dp"
+        android:layout_height="520dp"
+        app:layout_constraintBottom_toTopOf="@+id/RECV_TEXT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.202">
+
+        <TextView
+            android:id="@+id/RECV_SCROLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical|horizontal" />
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

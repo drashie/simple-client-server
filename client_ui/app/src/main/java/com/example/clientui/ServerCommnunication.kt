@@ -14,7 +14,7 @@ import java.net.URL
 /* Here the communication with our server happens */
 class ServerCommunication {
     val RASPI_IP = "192.168.178.34"
-    val PORT = 5556
+    val PORT = 5555
 
     /**
      * @brief get the data from the server
@@ -40,7 +40,7 @@ class ServerCommunication {
             val bufferReader = BufferedReader(inputStreamReader)
             var line: String? = bufferReader.readLine()
             while (line != null) {
-                response += line
+                response += line + "\n"
                 Log.d("TAG", "response value: $response")
                 line = bufferReader.readLine()
             }

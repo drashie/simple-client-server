@@ -36,12 +36,12 @@ class MainActivity : AppCompatActivity() {
 
             lifecycleScope.launch (Dispatchers.IO) {
                 var resp = "Not connected"
-                try {
-                    resp = servCom.getData()
+                resp = try {
+                    servCom.getData()
                 } catch (e : Exception) {
-                     resp = "ERROR: could not connect to server!"
-                 }
-                updateTextView(resp)
+                    "ERROR: could not connect to server!"
+                }
+                updateTextView(resp);
             }
         }
 
@@ -80,7 +80,8 @@ class MainActivity : AppCompatActivity() {
      * @param resp String that is shown on textview
      */
     private fun updateTextView(resp: String){
-        val recvText = findViewById<TextView>(R.id.RECV_TEXT)
+        val recvText = findViewById<TextView>(R.id.RECV_SCROLL)
+        
         runOnUiThread{
             recvText.text = resp
         }
