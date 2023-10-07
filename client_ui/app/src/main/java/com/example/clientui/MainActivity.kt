@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         addButton.setOnClickListener{
-            updateTextView(servCom.sendData("Test"))
+            val input_field = findViewById<EditText>(R.id.SvInput)
+            val inputText = input_field.text.toString()
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                val resp = servCom.sendData(inputText)
+
+                updateTextView(resp)
+            }
         }
 
         pingButton.setOnClickListener{

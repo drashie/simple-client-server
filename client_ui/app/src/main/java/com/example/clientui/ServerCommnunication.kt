@@ -64,8 +64,33 @@ class ServerCommunication {
         }
         /* Add null character so the c server does not complain */
         val newContent = "ADD $content\u0000"
+        var resp = ""
 
-        return "ADD BUTTON PRESSED"
+        try {
+            // create socket to raspi with port 5555
+            val socket = Socket(RASPI_IP, PORT)
+            // send data to the server
+            val outputStreamWriter = OutputStreamWriter(socket.getOutputStream(), "UTF-8")
+            outputStreamWriter.write(newContent)
+            outputStreamWriter.flush()
+
+            Thread.sleep(1000)
+
+            val inputStreamReader = InputStreamReader(socket.getInputStream(), "UTF-8")
+            val bufferReader = BufferedReader(inputStreamReader)
+            var line: String? = bufferReader.readLine()
+            while (line != null) {
+                resp += line + "\n"
+                Log.d("TAG", "response value: $resp")
+                line = bufferReader.readLine()
+            }
+            socket.close()
+        } catch (e : Exception){
+            e.printStackTrace()
+            resp = "ERROR CAN NOT CONNECT TO SERVER"
+        }
+
+        return resp
     }
 
 }
