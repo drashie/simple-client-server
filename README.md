@@ -4,9 +4,23 @@ This is a very basic client server system I created for learning reasons. The cl
 # server
 server is running as C code using the socket library
 
+To compile and run:
+
+`gcc server.c dataprocess.c -o sv`
+
+`./sv`
+
 # client
 client is running as a kotlin app for android (and also C for desktop)
 
 UI:
 
 <img src="https://github.com/drashie/simple-client-server/assets/106255805/74deab58-a5dd-4e78-808b-d0a22735634e" alt="Screenshot" width="300">
+
+To compile and run the C client:
+
+`gcc client.c -o cl`
+
+`./cl GET`
+
+`./cl ADD sometext`
