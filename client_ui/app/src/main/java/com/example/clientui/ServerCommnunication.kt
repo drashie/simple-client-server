@@ -14,7 +14,7 @@ import java.net.URL
 /* Here the communication with our server happens */
 class ServerCommunication {
     val RASPI_IP = "192.168.178.34"
-    val PORT = 5556
+    val PORT = 5555
 
     /**
      * @brief get the data from the server
@@ -40,7 +40,7 @@ class ServerCommunication {
             val bufferReader = BufferedReader(inputStreamReader)
             var line: String? = bufferReader.readLine()
             while (line != null) {
-                response += line
+                response += line + "\n"
                 Log.d("TAG", "response value: $response")
                 line = bufferReader.readLine()
             }
@@ -64,8 +64,33 @@ class ServerCommunication {
         }
         /* Add null character so the c server does not complain */
         val newContent = "ADD $content\u0000"
+        var resp = ""
 
-        return "ADD BUTTON PRESSED"
+        try {
+            // create socket to raspi with port 5555
+            val socket = Socket(RASPI_IP, PORT)
+            // send data to the server
+            val outputStreamWriter = OutputStreamWriter(socket.getOutputStream(), "UTF-8")
+            outputStreamWriter.write(newContent)
+            outputStreamWriter.flush()
+
+            Thread.sleep(1000)
+
+            val inputStreamReader = InputStreamReader(socket.getInputStream(), "UTF-8")
+            val bufferReader = BufferedReader(inputStreamReader)
+            var line: String? = bufferReader.readLine()
+            while (line != null) {
+                resp += line + "\n"
+                Log.d("TAG", "response value: $resp")
+                line = bufferReader.readLine()
+            }
+            socket.close()
+        } catch (e : Exception){
+            e.printStackTrace()
+            resp = "ERROR CAN NOT CONNECT TO SERVER"
+        }
+
+        return resp
     }
 
 }

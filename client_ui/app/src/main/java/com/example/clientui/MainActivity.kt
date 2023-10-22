@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -36,17 +37,24 @@ class MainActivity : AppCompatActivity() {
 
             lifecycleScope.launch (Dispatchers.IO) {
                 var resp = "Not connected"
-                try {
-                    resp = servCom.getData()
+                resp = try {
+                    servCom.getData()
                 } catch (e : Exception) {
-                     resp = "ERROR: could not connect to server!"
-                 }
-                updateTextView(resp)
+                    "ERROR: could not connect to server!"
+                }
+                updateTextView(resp);
             }
         }
 
         addButton.setOnClickListener{
-            updateTextView(servCom.sendData("Test"))
+            val input_field = findViewById<EditText>(R.id.SvInput)
+            val inputText = input_field.text.toString()
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                val resp = servCom.sendData(inputText)
+
+                updateTextView(resp)
+            }
         }
 
         pingButton.setOnClickListener{
@@ -80,7 +88,8 @@ class MainActivity : AppCompatActivity() {
      * @param resp String that is shown on textview
      */
     private fun updateTextView(resp: String){
-        val recvText = findViewById<TextView>(R.id.RECV_TEXT)
+        val recvText = findViewById<TextView>(R.id.RECV_SCROLL)
+        
         runOnUiThread{
             recvText.text = resp
         }
