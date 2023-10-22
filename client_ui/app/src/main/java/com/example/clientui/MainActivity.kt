@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch (Dispatchers.IO) {
                 var resp = "Not connected"
                 resp = try {
-                    servCom.getData()
+                    servCom.get()
                 } catch (e : Exception) {
                     "ERROR: could not connect to server!"
                 }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             val inputText = input_field.text.toString()
 
             lifecycleScope.launch(Dispatchers.IO) {
-                val resp = servCom.sendData(inputText)
+                val resp = servCom.add(inputText)
 
                 updateTextView(resp)
             }
