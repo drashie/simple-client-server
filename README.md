@@ -6,3 +6,7 @@ server is running as C code using the socket library
 
 # client
 client is running as a kotlin app for android (and also C for desktop)
+
+UI:
+
+<img src="https://github.com/drashie/simple-client-server/assets/106255805/74deab58-a5dd-4e78-808b-d0a22735634e" alt="Screenshot" width="300">
