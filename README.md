@@ -1,6 +1,8 @@
 # About the project
 This is a very basic client server system I created for learning reasons. The client can send a String in form of "ADD sometext" to the server and the server will add the input to a .txt file and responds if the operation was successfull. The Client can also send "GET" in which the server will respond with the whole content of the file.
 
+NOTE: The server can currently only handle one client at a time and will process multiple client requests one after another.
+
 # server
 server is running as C code using the socket library
 
