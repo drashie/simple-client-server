@@ -17,7 +17,8 @@ client is running as a kotlin app for android (and also C for desktop)
 
 UI:
 
-<img src="https://github.com/drashie/simple-client-server/assets/106255805/74deab58-a5dd-4e78-808b-d0a22735634e" alt="Screenshot" width="300">
+<img src="https://github.com/drashie/simple-client-server/assets/106255805/2d2163e8-9df9-495f-822d-e84e422248ea" alt="Screenshot" width="300">
+
 
 To compile and run the C client:
 
